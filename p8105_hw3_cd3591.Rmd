@@ -5,4 +5,11 @@ date: "2025-10-10"
 output: github_document
 ---
 
+```{r}
+# set up libraries and the dataset
+library(tidyverse)
+library(p8105.datasets)
+data("instacart")
+```
+
 
