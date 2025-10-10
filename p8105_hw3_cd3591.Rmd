@@ -18,18 +18,18 @@ data("instacart")
 str(instacart)
 head(instacart) # illustrative examples of observations
 ```
-*Short Description*: The instacart dataset contains `r nrow(instacart)` observations of `r ncol(instacart)` variables, representing individual grocery orders placed through the Instacart platform. Each observation corresponds to a single product ordered by a user. Key variables include: order_id, indicating unique identifier for each order;  product_id & product_name, identifying the product ordered; aisle_id / department_id, describing where the product is found; order_hour_of_day, showing the time of order placement; order_dow, indicating the day of week (0 = Sunday).
+**Short Description**: The instacart dataset contains `r nrow(instacart)` observations of `r ncol(instacart)` variables, representing individual grocery orders placed through the Instacart platform. Each observation corresponds to a single product ordered by a user. Key variables include: order_id, indicating unique identifier for each order;  product_id & product_name, identifying the product ordered; aisle_id / department_id, describing where the product is found; order_hour_of_day, showing the time of order placement; order_dow, indicating the day of week (0 = Sunday).
 
-1)
+Q1
 ```{r}
 # How many aisles are there, and which aisles are the most items ordered from?
 aisle = instacart %>% count(aisle, sort = TRUE)
 n_aisle = nrow(aisle)
 head(aisle, 3)
 ```
-There are `n_aisle` aisles in total. The most frequently ordered aisles are fresh vegetables, fresh fruits, and packaged vegetables fruits.
+There are `r n_aisle` aisles in total. The most frequently ordered aisles are fresh vegetables, fresh fruits, and packaged vegetables fruits.
 
-2)
+Q2
 ```{r}
 aisle %>%
   filter(n > 10000) %>%  # limiting this to aisles with more than 10000 items ordered
@@ -41,7 +41,7 @@ aisle %>%
        # since there are long labels like “packaged vegetables fruits”, fit much better along the y-axis than rotated on the x-axis.
 ```
 
-3)
+Q3
 ```{r}
 popular_items = instacart %>%  # Make a table
   filter(aisle == "baking ingredients" |
@@ -49,19 +49,19 @@ popular_items = instacart %>%  # Make a table
     aisle == "packaged vegetables fruits") %>%  
   # in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”
   group_by(aisle, product_name) %>%
-  summarise(times_ordered = n()) %>%  # Include the number of times each item is ordered in your table
+  summarise(times_ordered = n(), .groups = "drop") %>%  # Include the number of times each item is ordered in your table
   slice_max(times_ordered, n = 3)  # showing the three most popular items
 
 popular_items
 ```
 
-4)
+Q4
 ```{r}
 mean_hour = instacart %>%  # Make a table
   filter(product_name == "Pink Lady Apples" | 
            product_name == "Coffee Ice Cream") %>%  # at which Pink Lady Apples and Coffee Ice Cream
   group_by(product_name, order_dow) %>%  # ordered on each day of the week
-  summarise(mean_hour = mean(order_hour_of_day)) %>%  # showing the mean hour of the day
+  summarise(mean_hour = mean(order_hour_of_day), .groups = "drop") %>%  # showing the mean hour of the day
   pivot_wider(names_from = order_dow, values_from = mean_hour) %>%  # produce a 2 x 8 table
   rename(Sun = "0", Mon = "1", Tue = "2", Wed = "3", Thu = "4", Fri = "5", Sat = "6")
 
@@ -106,7 +106,7 @@ NY_zori = zori_new %>%
   relocate(zip_code, date, ZORI)
 ```
 
-1)
+Q1
 ```{r}
 ny_1501_2408 = NY_zori %>%
   filter(date >= ymd("2015-01-01"), date <= ymd("2024-08-31"))  # filter the date between January 2015 and August 2024
@@ -114,9 +114,9 @@ ny_1501_2408 = NY_zori %>%
 zip_counts = ny_1501_2408 %>%
   count(zip_code, name = "n_months")  # create the counts of zip table
 
-n_116  <- sum(zip_counts$n_months == 116)  # How many ZIP codes are observed 116 times?
+n_116  = sum(zip_counts$n_months == 116)  # How many ZIP codes are observed 116 times?
 
-n_lt10 <- sum(zip_counts$n_months < 10)  #How many are observed fewer than 10 times?
+n_lt10 = sum(zip_counts$n_months < 10)  #How many are observed fewer than 10 times?
 
 # There are 116 months between January 2015 and August 2024. How many ZIP codes are observed 116 times? How many are observed fewer than 10 times? Why are some ZIP codes are observed rarely and others observed in each month?
 ```
