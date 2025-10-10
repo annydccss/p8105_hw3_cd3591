@@ -68,3 +68,41 @@ mean_hour = instacart %>%  # Make a table
 mean_hour
 ```
 
+# Problem 2
+```{r}
+# read the dataset
+zip_info = read.csv("Zip Codes.csv", na = c("NA", ".", ""))%>% 
+  janitor::clean_names() # clean names
+zori = read.csv("Zip_zori_uc_sfrcondomfr_sm_month_NYC.csv", na = c("NA", ".", ""))%>% 
+  janitor::clean_names() # clean names
+
+# tidy zori
+zori_new = zori %>% pivot_longer(
+  x2015_01_31:x2024_08_31, 
+  names_to = "date",
+  values_to = "ZORI",
+  names_prefix = "x"
+  ) %>%  # tidy the dates
+  mutate(date = ymd(str_replace_all(date, "_", "-")),
+         zip_code  = as.integer(region_name)
+         ) 
+
+# collapse zip_info to one row per ZIP to avoid many-to-many
+zip_info_one = zip_info %>%
+  mutate(county = if_else(county == "New York", "Manhattan", county),
+         zip_code = as.integer(zip_code)) %>%
+  group_by(zip_code) %>%
+  summarise(borough = first(county),
+            neighborhood = str_c(sort(unique(neighborhood)), collapse = "; "),
+            .groups = "drop") %>%
+  dplyr::mutate(neighborhood = dplyr::na_if(neighborhood, ""))  # identify the empty is NA
+
+#merge together
+NY_zori = zori_new %>%
+  left_join(zip_info_one,
+            by = "zip_code") %>%
+  dplyr::mutate(neighborhood = dplyr::na_if(neighborhood, "")) %>%  # identify the empty is NA
+  arrange(zip_code, date) %>%
+  relocate(zip_code, date, ZORI)
+```
+
