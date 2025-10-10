@@ -54,3 +54,17 @@ popular_items = instacart %>%  # Make a table
 
 popular_items
 ```
+
+4)
+```{r}
+mean_hour = instacart %>%  # Make a table
+  filter(product_name == "Pink Lady Apples" | 
+           product_name == "Coffee Ice Cream") %>%  # at which Pink Lady Apples and Coffee Ice Cream
+  group_by(product_name, order_dow) %>%  # ordered on each day of the week
+  summarise(mean_hour = mean(order_hour_of_day)) %>%  # showing the mean hour of the day
+  pivot_wider(names_from = order_dow, values_from = mean_hour) %>%  # produce a 2 x 8 table
+  rename(Sun = "0", Mon = "1", Tue = "2", Wed = "3", Thu = "4", Fri = "5", Sat = "6")
+
+mean_hour
+```
+
