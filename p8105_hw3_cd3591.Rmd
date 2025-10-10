@@ -106,3 +106,18 @@ NY_zori = zori_new %>%
   relocate(zip_code, date, ZORI)
 ```
 
+1)
+```{r}
+ny_1501_2408 = NY_zori %>%
+  filter(date >= ymd("2015-01-01"), date <= ymd("2024-08-31"))  # filter the date between January 2015 and August 2024
+
+zip_counts = ny_1501_2408 %>%
+  count(zip_code, name = "n_months")  # create the counts of zip table
+
+n_116  <- sum(zip_counts$n_months == 116)  # How many ZIP codes are observed 116 times?
+
+n_lt10 <- sum(zip_counts$n_months < 10)  #How many are observed fewer than 10 times?
+
+# There are 116 months between January 2015 and August 2024. How many ZIP codes are observed 116 times? How many are observed fewer than 10 times? Why are some ZIP codes are observed rarely and others observed in each month?
+```
+There are `r n_116` ZIP codes observed 116 times and there are `r n_lt10` observed fewer than 10 times. Some ZIP codes don’t have many rental listings, like some small or mostly owner-occupied areas. When there isn’t enough data in a month, Zillow may leave it missing. By contrast, ZIP codes with consistent, high listing volume (dense residential areas) have enough data every month, so they’re observed in all 116 months.
