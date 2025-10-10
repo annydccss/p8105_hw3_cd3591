@@ -12,4 +12,10 @@ library(p8105.datasets)
 data("instacart")
 ```
 
-
+# Problem 1
+```{r}
+# basic structure of the dataset
+str(instacart)
+head(instacart) # illustrative examples of observations
+```
+*Short Description*: The instacart dataset contains `r nrow(instacart)` observations of `r ncol(instacart)` variables, representing individual grocery orders placed through the Instacart platform. Each observation corresponds to a single product ordered by a user. Key variables include: order_id, indicating unique identifier for each order;  product_id & product_name, identifying the product ordered; aisle_id / department_id, describing where the product is found; order_hour_of_day, showing the time of order placement; order_dow, indicating the day of week (0 = Sunday).
