@@ -28,3 +28,29 @@ n_aisle = nrow(aisle)
 head(aisle, 3)
 ```
 There are `n_aisle` aisles in total. The most frequently ordered aisles are fresh vegetables, fresh fruits, and packaged vegetables fruits.
+
+2)
+```{r}
+aisle %>%
+  filter(n > 10000) %>%  # limiting this to aisles with more than 10000 items ordered
+  mutate(aisle = fct_reorder(aisle, n)) %>%
+  ggplot(aes(x = n, y = aisle)) +  # Make a plot that shows the number of items ordered in each aisle
+  geom_col() +
+  labs(title = "Number of Items Ordered per Aisle (>10,000 orders)",
+       x = "Number of Items Ordered", y = "Aisle Name")   
+       # since there are long labels like “packaged vegetables fruits”, fit much better along the y-axis than rotated on the x-axis.
+```
+
+3)
+```{r}
+popular_items = instacart %>%  # Make a table
+  filter(aisle == "baking ingredients" |
+    aisle == "dog food care" |
+    aisle == "packaged vegetables fruits") %>%  
+  # in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”
+  group_by(aisle, product_name) %>%
+  summarise(times_ordered = n()) %>%  # Include the number of times each item is ordered in your table
+  slice_max(times_ordered, n = 3)  # showing the three most popular items
+
+popular_items
+```
