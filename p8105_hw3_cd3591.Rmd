@@ -153,3 +153,23 @@ nyc_rental_plot = NY_zori %>%
 nyc_rental_plot
 ```
 **Comments**: From the graph, rents rose slowly from 2015 to 2019, flattened around 2020–2021, and then jumped sharply after 2021, especially in Manhattan. Each thin line indicates the rents of each zip code. Manhattan was always the most expensive and showed the widest spread across ZIP codes, indicating large within-borough differences. Brooklyn came next and also showed noticeable spread; Queens sat in the middle with more moderate levels and variation. The Bronx was consistently the lowest, with tighter clustering of ZIPs. Richmond appeared only from about 2020 onward and tracked just above the Bronx. The thick line (borough median) in each panel highlighted these patterns: rebounds pushed all borough medians to new highs by the end of 2021, and the gap between Manhattan and lower-priced boroughs widened.
+
+Q4
+```{r}
+# Compute the average rental price within each ZIP code over each month in 2023
+avg_2023 = NY_zori %>%
+  filter(year(date) == 2023) %>%
+  group_by(zip_code, borough) %>%
+  summarise(avg_2023 = mean(ZORI, na.rm = TRUE), .groups = "drop")
+
+# Make a reader-friendly plot showing the distribution of ZIP-code-level rental prices across boroughs
+avg_2023_pplot = ggplot(avg_2023, aes(x = borough, y = avg_2023)) +  
+  # facilitate the comparison of the distribution of average rental prices across boroughs
+  geom_boxplot(outlier.alpha = 0.3, na.rm = TRUE) +
+  labs(title = "Distribution of ZIP-Level Average Rent in 2023 by Borough",
+       x = "Borough", y = "Average 2023 Rent (USD)")
+
+avg_2023_pplot
+```
+**Comments**: In 2023, rents were the highest and most uneven in Manhattan, with several zip codes with very expensive rents pulling the upper tail up. Brooklyn followed with a lower median than Manhattan but still wide variation across ZIPs. Queens sat in the middle with moderate rents and a few higher-priced outliers. Richmond was a bit higher than the Bronx on median rent and showed the thinest box, suggesting uniform prices across its ZIP codes.
+
