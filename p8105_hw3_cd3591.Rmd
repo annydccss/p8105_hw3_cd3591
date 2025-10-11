@@ -19,6 +19,7 @@ data("instacart")
 str(instacart)
 head(instacart) # illustrative examples of observations
 ```
+
 **Short Description**: The instacart dataset contains `r nrow(instacart)` observations of `r ncol(instacart)` variables, representing individual grocery orders placed through the Instacart platform. Each observation corresponds to a single product ordered by a user. Key variables include: order_id, indicating unique identifier for each order;  product_id & product_name, identifying the product ordered; aisle_id / department_id, describing where the product is found; order_hour_of_day, showing the time of order placement; order_dow, indicating the day of week (0 = Sunday).
 
 Q1
@@ -28,6 +29,7 @@ aisle = instacart %>% count(aisle, sort = TRUE)
 n_aisle = nrow(aisle)
 head(aisle, 3)
 ```
+
 There are `r n_aisle` aisles in total. The most frequently ordered aisles are fresh vegetables, fresh fruits, and packaged vegetables fruits.
 
 Q2
@@ -121,6 +123,7 @@ n_lt10 = sum(zip_counts$n_months < 10)  #How many are observed fewer than 10 tim
 
 # There are 116 months between January 2015 and August 2024. How many ZIP codes are observed 116 times? How many are observed fewer than 10 times? Why are some ZIP codes are observed rarely and others observed in each month?
 ```
+
 There are `r n_116` ZIP codes observed 116 times and there are `r n_lt10` observed fewer than 10 times. Some ZIP codes don’t have many rental listings, like some small or mostly owner-occupied areas. When there isn’t enough data in a month, Zillow may leave it missing. By contrast, ZIP codes with consistent, high listing volume (dense residential areas) have enough data every month, so they’re observed in all 116 months.
 
 Q2
@@ -135,6 +138,7 @@ average_rental = NY_zori %>%
 
 average_rental
 ```
+
 **Comments**: During 2015.01–2024.08, Manhattan is consistently the most expensive borough, followed by Brooklyn, Queens, and the Bronx, with Richmond slightly above the Bronx once data appear in 2020. Rents generally rose from 2015 to 2019, flattened around 2020–2021, and then rebounded sharply to new highs by 2024 in every borough. The surge after 2021 is the strongest in Manhattan, widening the gap between high- and lower-priced areas. Early years for Richmond are missing, which is why those cells show NaN.
 
 Q3
@@ -153,6 +157,7 @@ nyc_rental_plot = NY_zori %>%
 
 nyc_rental_plot
 ```
+
 **Comments**: From the graph, rents rose slowly from 2015 to 2019, flattened around 2020–2021, and then jumped sharply after 2021, especially in Manhattan. Each thin line indicates the rents of each zip code. Manhattan was always the most expensive and showed the widest spread across ZIP codes, indicating large within-borough differences. Brooklyn came next and also showed noticeable spread; Queens sat in the middle with more moderate levels and variation. The Bronx was consistently the lowest, with tighter clustering of ZIPs. Richmond appeared only from about 2020 onward and tracked just above the Bronx. The thick line (borough median) in each panel highlighted these patterns: rebounds pushed all borough medians to new highs by the end of 2021, and the gap between Manhattan and lower-priced boroughs widened.
 
 Q4
@@ -172,6 +177,7 @@ avg_2023_pplot = ggplot(avg_2023, aes(x = borough, y = avg_2023)) +
 
 avg_2023_pplot
 ```
+
 **Comments**: In 2023, rents were the highest and most uneven in Manhattan, with several zip codes with very expensive rents pulling the upper tail up. Brooklyn followed with a lower median than Manhattan but still wide variation across ZIPs. Queens sat in the middle with moderate rents and a few higher-priced outliers. Richmond was a bit higher than the Bronx on median rent and showed the thinest box, suggesting uniform prices across its ZIP codes.
 
 Q5
@@ -181,5 +187,5 @@ combine_plot = (nyc_rental_plot + avg_2023_pplot)
 
 # export this to a results folder in your repository
 dir.create("results", showWarnings = FALSE, recursive = TRUE)
-ggsave("results/zillow_combined.png")
+ggsave("results/zillow_combined.png", width = 12, height = 10, dpi = 300)
 ```
