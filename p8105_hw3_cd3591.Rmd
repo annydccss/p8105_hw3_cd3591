@@ -205,14 +205,16 @@ covar_fixed = covar %>%
   slice(-(1:4)) %>%  # remove the first 4 rows
   janitor::clean_names() %>%  # make nice: seqn, sex, age, bmi, education
   mutate(
+    age = as.integer(age),
+    bmi = as.numeric(bmi),
     seqn = as.character(seqn),
     sex = fct_recode(as.factor(sex),
-                     "Male"   = "1",
-                     "Female" = "2"),  # change 1 to male; 2 to female
+                     "male"   = "1",
+                     "female" = "2"),  # change 1 to male; 2 to female
     education = fct_recode(as.factor(education),
-                           "Less than high school" = "1", 
-                           "High school equivalent" = "2", 
-                           "More than high school" = "3")  
+                           "less than high school" = "1", 
+                           "high school equivalent" = "2", 
+                           "more than high school" = "3")  
     #change 1 = less than high school; 2 = high school equivalent; 3 = more than high school
   )
 
@@ -232,4 +234,27 @@ mims_data = covar_clean %>%
   
 mims_data
 ```
+
+Q2
+```{r}
+# Produce a reader-friendly table for the number of men and women in each education category
+counts_tbl = covar_clean %>%
+  count(education, sex, name = "n") %>%
+  arrange(education, sex) %>% 
+  pivot_wider(names_from = sex, values_from = n) %>%
+  knitr::kable(caption = "Counts by education and sex (adults only)")
+
+counts_tbl
+  
+# create a visualization of the age distributions for men and women in each education category
+ggplot(covar_clean, aes(x = age, fill = sex)) +
+  geom_histogram(position = "identity", alpha = 0.45, bins = 20) +
+  facet_wrap(~ education, ncol = 3) +
+  labs(title = "Age distributions by sex within education",
+       x = "Age (years)", y = "Count", fill = "Sex") +
+  theme_minimal()
+
+```
+
+**Comments**: From the table, men and women were about even in less than high school (28 vs 29) and in more than high school (55 vs 58), while high school equivalent was male-heavy (34 men vs 23 women). From the age plots, the male and female distributions overlapped a lot within each education group and there was no major age shift by sex. Moreover, in more than high school women clustered a bit more in their 20s–40s and men were slightly more spread out, but the differences were small.
 
