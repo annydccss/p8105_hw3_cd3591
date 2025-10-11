@@ -134,5 +134,22 @@ average_rental = NY_zori %>%
 
 average_rental
 ```
-**Comments**: During 2015.01–2024.08, Manhattan is consistently the most expensive borough, followed by Brooklyn, Queens, and the Bronx, with Richmond slightly above the Bronx once data appear in 2020. Rents generally rose from 2015 to 2019, flattened around 2020–2021, and then rebounded sharply to new highs by 2024 in every borough. The post-2021 surge is the strongest in Manhattan, widening the gap between high- and lower-priced areas. Early years for Richmond are missing, which is why those cells show NaN.
+**Comments**: During 2015.01–2024.08, Manhattan is consistently the most expensive borough, followed by Brooklyn, Queens, and the Bronx, with Richmond slightly above the Bronx once data appear in 2020. Rents generally rose from 2015 to 2019, flattened around 2020–2021, and then rebounded sharply to new highs by 2024 in every borough. The surge after 2021 is the strongest in Manhattan, widening the gap between high- and lower-priced areas. Early years for Richmond are missing, which is why those cells show NaN.
 
+Q3
+```{r}
+# Make a plot showing NYC Rental Prices within ZIP codes for all available years.
+nyc_rental_plot = NY_zori %>%
+  mutate(year = year(date)) %>%
+  group_by(zip_code, borough, year) %>%
+  summarise(rent = mean(ZORI, na.rm = TRUE), .groups = "drop") %>%
+  ggplot(aes(x = year, y = rent, group = zip_code)) +
+  geom_line(alpha = 0.25, na.rm = TRUE) +
+  stat_summary(aes(group = borough), fun = median, geom = "line", linewidth = 1, na.rm = TRUE) +
+  facet_wrap(~ borough, ncol = 3) +  # facilitate comparisons across boroughs
+  labs(title = "NYC ZIP-Code Rental Price",
+       x = "Year", y = "Rent (USD)")
+
+nyc_rental_plot
+```
+**Comments**: From the graph, rents rose slowly from 2015 to 2019, flattened around 2020–2021, and then jumped sharply after 2021, especially in Manhattan. Each thin line indicates the rents of each zip code. Manhattan was always the most expensive and showed the widest spread across ZIP codes, indicating large within-borough differences. Brooklyn came next and also showed noticeable spread; Queens sat in the middle with more moderate levels and variation. The Bronx was consistently the lowest, with tighter clustering of ZIPs. Richmond appeared only from about 2020 onward and tracked just above the Bronx. The thick line (borough median) in each panel highlighted these patterns: rebounds pushed all borough medians to new highs by the end of 2021, and the gap between Manhattan and lower-priced boroughs widened.
