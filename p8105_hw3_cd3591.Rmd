@@ -8,6 +8,7 @@ output: github_document
 ```{r}
 # set up libraries and the dataset
 library(tidyverse)
+library(patchwork)
 library(p8105.datasets)
 data("instacart")
 ```
@@ -173,3 +174,12 @@ avg_2023_pplot
 ```
 **Comments**: In 2023, rents were the highest and most uneven in Manhattan, with several zip codes with very expensive rents pulling the upper tail up. Brooklyn followed with a lower median than Manhattan but still wide variation across ZIPs. Queens sat in the middle with moderate rents and a few higher-priced outliers. Richmond was a bit higher than the Bronx on median rent and showed the thinest box, suggesting uniform prices across its ZIP codes.
 
+Q5
+```{r}
+# Combine the two previous plots into a single graphic
+combine_plot = (nyc_rental_plot + avg_2023_pplot)
+
+# export this to a results folder in your repository
+dir.create("results", showWarnings = FALSE, recursive = TRUE)
+ggsave("results/zillow_combined.png")
+```
