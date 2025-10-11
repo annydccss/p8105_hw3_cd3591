@@ -189,3 +189,47 @@ combine_plot = (nyc_rental_plot + avg_2023_pplot)
 dir.create("results", showWarnings = FALSE, recursive = TRUE)
 ggsave("results/zillow_combined.png", width = 16, height = 8, dpi = 320)
 ```
+
+# Problem 3
+Q1
+```{r}
+# import the datasets
+covar = read_csv("nhanes_covar.csv", na = c("NA", ".", "")) %>%
+  janitor::clean_names()  # clean names
+accel = read_csv("nhanes_accel.csv", na = c("NA", ".", "")) %>%
+  janitor::clean_names()   # clean names
+
+# tidy covar dataset
+covar_fixed = covar %>%
+  janitor::row_to_names(row_number = 4) %>%  # use row 4 as column names
+  slice(-(1:4)) %>%  # remove the first 4 rows
+  janitor::clean_names() %>%  # make nice: seqn, sex, age, bmi, education
+  mutate(
+    seqn = as.character(seqn),
+    sex = fct_recode(as.factor(sex),
+                     "Male"   = "1",
+                     "Female" = "2"),  # change 1 to male; 2 to female
+    education = fct_recode(as.factor(education),
+                           "Less than high school" = "1", 
+                           "High school equivalent" = "2", 
+                           "More than high school" = "3")  
+    #change 1 = less than high school; 2 = high school equivalent; 3 = more than high school
+  )
+
+# exclude participants less than 21 years of age, and those with missing demographic data
+covar_clean = covar_fixed %>%
+  filter(!is.na(seqn), !is.na(sex), !is.na(age), !is.na(education), age >= 21)
+
+# tidy accel
+accel = accel %>% 
+  mutate(seqn = as.character(seqn))
+
+# merge covar and accel
+minute_cols = names(accel %>% select(starts_with("min")))
+
+mims_data = covar_clean %>%
+  inner_join(accel %>% select(seqn, all_of(minute_cols)), by = "seqn")
+  
+mims_data
+```
+
