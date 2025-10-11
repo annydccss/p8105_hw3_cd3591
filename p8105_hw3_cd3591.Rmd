@@ -258,3 +258,21 @@ ggplot(covar_clean, aes(x = age, fill = sex)) +
 
 **Comments**: From the table, men and women were about even in less than high school (28 vs 29) and in more than high school (55 vs 58), while high school equivalent was male-heavy (34 men vs 23 women). From the age plots, the male and female distributions overlapped a lot within each education group and there was no major age shift by sex. Moreover, in more than high school women clustered a bit more in their 20s–40s and men were slightly more spread out, but the differences were small.
 
+Q3
+```{r}
+# aggregate across minutes to create a total activity variable for each participant
+totals = mims_data %>%
+  mutate(total_activity = rowSums(across(all_of(minute_cols)), na.rm = TRUE))
+
+# Plot these total activities (y-axis) against age (x-axis)
+ggplot(totals, aes(x = age, y = total_activity, color = sex)) +  # compare men to women
+  geom_point(alpha = 0.6) +
+  geom_smooth(se = FALSE, method = "loess") +  # Include a trend line or a smooth to illustrate differences.
+  facet_wrap(~ education, ncol = 3) +  # have separate panels for each education level
+  labs(title = "Total daily activity (MIMS sum) vs Age",
+       x = "Age", y = "Total MIMS", color = "Sex") +
+  theme_minimal()
+```
+
+**Comments**: Across all three education groups, total daily activity generally went down as age went up. In more than high school and less than high school, the decline was steady from the 20s/30s into older ages. In high school equivalent, there was a small mid-life bump (around the 30s–40s) before activity dropped in later years. Men and women looked very similar overall. In specific, their smooth lines sat close together, though women were a tad higher in activity in parts of the middle ages in the HS-equivalent and >HS panels. The main trend is the age-related decline, with only small sex differences.
+
