@@ -187,5 +187,5 @@ combine_plot = (nyc_rental_plot + avg_2023_pplot)
 
 # export this to a results folder in your repository
 dir.create("results", showWarnings = FALSE, recursive = TRUE)
-ggsave("results/zillow_combined.png", width = 12, height = 10, dpi = 300)
+ggsave("results/zillow_combined.png", width = 16, height = 8, dpi = 320)
 ```
