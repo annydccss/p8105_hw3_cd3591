@@ -201,8 +201,7 @@ accel = read_csv("nhanes_accel.csv", na = c("NA", ".", "")) %>%
 
 # tidy covar dataset
 covar_fixed = covar %>%
-  janitor::row_to_names(row_number = 4) %>%  # use row 4 as column names
-  slice(-(1:4)) %>%  # remove the first 4 rows
+  janitor::row_to_names(row_number = 4) %>%  # use row 4 as column names & remove the first 4 rows
   janitor::clean_names() %>%  # make nice: seqn, sex, age, bmi, education
   mutate(
     age = as.integer(age),
@@ -231,7 +230,7 @@ minute_cols = names(accel %>% select(starts_with("min")))
 
 mims_data = covar_clean %>%
   inner_join(accel %>% select(seqn, all_of(minute_cols)), by = "seqn")
-  
+
 mims_data
 ```
 
@@ -296,7 +295,7 @@ ggplot(prof, aes(x = minute_num/60, y = mims_mean, color = sex)) +  # use color 
   facet_wrap(~ education, ncol = 1) +  # for each education level
   scale_x_continuous(breaks = seq(0, 24, 4)) +
   labs(title = "Average 24-hour activity profiles by education",
-       x = "Time of day (hour)", y = "Mean MIMS", color = "Sex") +
+       x = "Time of day (hour)", y = "Mean MIMSC:/Users/13013/OneDrive/桌面/BIST8105P data sciencec I/p8105_hw3_cd3591/nhanes_accel.csv", color = "Sex") +
   theme_minimal()
 ```
 
