@@ -48,11 +48,11 @@ Q3
 ```{r}
 popular_items = instacart %>%  # Make a table
   filter(aisle == "baking ingredients" |
-    aisle == "dog food care" |
-    aisle == "packaged vegetables fruits") %>%  
+           aisle == "dog food care" |
+           aisle == "packaged vegetables fruits") %>%  
   # in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”
   group_by(aisle, product_name) %>%
-  summarise(times_ordered = n(), .groups = "drop") %>%  # Include the number of times each item is ordered in your table
+  summarise(times_ordered = n(), .groups = "drop_last") %>%  # Include the number of times each item is ordered in your table
   slice_max(times_ordered, n = 3)  # showing the three most popular items
 
 popular_items
