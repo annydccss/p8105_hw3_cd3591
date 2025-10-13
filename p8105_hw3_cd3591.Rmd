@@ -255,7 +255,7 @@ ggplot(covar_clean, aes(x = age, fill = sex)) +
 
 ```
 
-**Comments**: From the table, men and women were about even in less than high school (28 vs 29) and in more than high school (56 vs 59), while high school equivalent was male-heavy (36 men vs 23 women). From the age plots, the male and female distributions overlapped a lot within each education group and there was no major age shift by sex. Moreover, in more than high school women clustered a bit more in their 20s–40s and men were slightly more spread out, but the differences were small.
+**Comments**: From the table, men and women were about even in less than high school (28 vs 29) and in more than high school (56 vs 59), while high school equivalent was male-heavy (36 men vs 23 women). From the age plots, most participants had more than high school education, and they were mostly in their 20s–40s; men and women looked very similar in that group. The high school equivalent group was smaller and more spread out across ages, with no clear sex differences. Furthermore, the less than high school group was the smallest and tended to be older overall (fewer people under 40). Overall, the age patterns were driven more by education level than by sex, and the overlapping bars suggest only minor male–female differences within each category.
 
 Q3
 ```{r}
@@ -273,7 +273,7 @@ ggplot(totals, aes(x = age, y = total_activity, color = sex)) +  # compare men t
   theme_minimal()
 ```
 
-**Comments**: Across all three education groups, total daily activity generally went down as age went up. In more than high school and less than high school, the decline was steady from the 20s/30s into older ages. In high school equivalent, there was a small mid-life bump (around the 30s–40s) before activity dropped in later years. Men and women looked very similar overall. In specific, their smooth lines sat close together, though women were a tad higher in activity in parts of the middle ages in the high school equivalent and more than high school panels. The main trend is the age-related decline, with only small sex differences.
+**Comments**: Across all three education groups, total daily activity generally went down as age went up. In more than high school and less than high school, the decline was steady from the 20s/30s into older ages. Moreover, the decline was more gentle in more than high school, compared to less than high school. In high school equivalent, there was a small mid-life bump (around the 30s–40s) before activity dropped in later years. Men and women looked very similar overall. In specific, their smooth lines sat close together, though women were a tad higher in activity in parts of the middle ages in the high school equivalent and more than high school panels. The main trend is the age-related decline, with only small sex differences.
 
 Q4
 ```{r}
@@ -299,4 +299,4 @@ ggplot(prof, aes(x = minute_num/60, y = mims_mean, color = sex)) +  # use color 
   theme_minimal()
 ```
 
-**Comments**: Across all three education groups, activity was the lowest overnight,  then rose sharply in the morning, peaked around mid-day till early afternoon, and then gradually declined into the evening. The daily shape was very similar everywhere. The highest mid-day levels appeared in the less than high school group, the high school equivalent group was close behind, and more than high school was a bit lower overall with a slightly later rise. Men and women followed nearly the same pattern; any sex differences were small. In specific, women tended to be slightly higher during the day in the high school equivalent and more than high school groups, while men were a touch higher very early in the morning in the less than high school group.
+**Comments**: Across all three education groups, activity was the lowest overnight, then rose sharply in the morning, peaked around mid-day till early afternoon, and then gradually declined into the evening. The daily shape was very similar everywhere. The highest mid-day levels appeared in the less than high school group and more than high school, the high school equivalent group was close behind. Men and women followed nearly the same pattern; any sex differences were small. In specific, women tended to be slightly higher during the day in the high school equivalent and more than high school groups, while men were a touch higher very early in the morning in the less than high school group.
